@@ -8,7 +8,11 @@
 
 #import "ViewController.h"
 
+#define RAD_COR(x) ((x)/180.0*M_PI)
+
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UIView *backgroundView;
+@property (weak, nonatomic) IBOutlet UIImageView *picImageView;
 
 @end
 
@@ -16,12 +20,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [self test3];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    CATransform3D transform = self.picImageView.layer.transform;
+    transform = CATransform3DRotate(transform, RAD_COR(180), 0, 1, 0);
+    [UIView animateWithDuration:2.0f animations:^{
+        self.picImageView.layer.transform = transform;
+        self.backgroundView.layer.transform = transform;
+    }];
+    [super touchesBegan:touches withEvent:event];
+}
+
+- (void)test3
+{
+    CATransform3D transform = CATransform3DIdentity;
+    transform = CATransform3DRotate(transform, RAD_COR(180), 0, 1, 0);
+    self.picImageView.layer.doubleSided = NO;
+    self.picImageView.layer.transform = transform;
+    self.backgroundView.layer.transform = transform;
+
 }
 
 @end
